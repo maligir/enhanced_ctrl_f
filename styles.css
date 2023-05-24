@@ -40,10 +40,12 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
   }
   
 button:hover {
-  background-color: #007aff;
+  /* background-color: #007aff; */
+  transform: scale(1.05);
 }
   
   #results {
@@ -101,10 +103,12 @@ button:hover {
   .dark-mode button {
     background-color: #444;
     color: #fff;
+    transition: transform 0.3s ease;
   }
 
   .dark-mode button:hover {
-    background-color: #007aff;
+    /* background-color: #007aff; */
+    transform: scale(1.05);
   }
   
   .dark-mode input {
