@@ -1,6 +1,7 @@
 body {
     font-family: 'Avenir', Arial, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #fff;
+    color: #000;
     margin: 0;
     padding: 0;
   }
@@ -8,6 +9,10 @@ body {
   .popup-container {
     width: 300px;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   
   h1 {
@@ -29,7 +34,7 @@ body {
   }
   
   button {
-    background-color: #007aff;
+    background-color: #bbb;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -37,9 +42,9 @@ body {
     transition: background-color 0.3s ease;
   }
   
-  button:hover {
-    background-color: #0051a8;
-  }
+button:hover {
+  background-color: #007aff;
+}
   
   #results {
     margin-top: 15px;
@@ -51,10 +56,10 @@ body {
   }
   
   #results p {
-    margin: 0;
+    margin: 10px 0;
     padding: 10px;
-    border-radius: 25px;
-    background: #007aff;
+    border-radius: 4px; /* Lower radius for less 'bubbly' look */
+    background: #888;
     color: #fff;
     box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
     cursor: pointer;
@@ -66,5 +71,144 @@ body {
   }
   
   #results p:nth-child(even) {
-    background-color: #0051a8;
+    background-color: #444;
+  }
+
+  .dark-mode p {
+    background: #444;
+    color: #CCCCCC;
+  }
+
+#results .dark-mode p:hover {
+    transform: scale(1.05);
+}
+
+#results .dark-mode p:nth-child(even) {
+    background-color: #3d3d3d;
+}
+
+  .dark-mode {
+    background-color: #2f2f2f;
+    color: #CCCCCC;
+  }
+  
+  .dark-mode h1 {
+    color: #CCCCCC;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+  
+  .dark-mode button {
+    background-color: #444;
+    color: #fff;
+  }
+
+  .dark-mode button:hover {
+    background-color: #007aff;
+  }
+  
+  .dark-mode input {
+    background-color: #444;
+    color: #CCCCCC;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    float: right;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  /* Dark mode styles for the switch */
+  .dark-mode .slider {
+    background-color: #444;
+  }
+  
+  .dark-mode input:checked + .slider {
+    background-color: #888;
+  }
+
+  /* Styling the scrollbar for Webkit browsers */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+  
+  /* Dark Mode scrollbar styles */
+  .dark-mode ::-webkit-scrollbar-track {
+    background: #444; 
+  }
+   
+  .dark-mode ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  .dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
   }
