@@ -53,32 +53,36 @@ document.getElementById('searchButton').addEventListener('click', async () => {
 
 async function searchForText(query) {
     const bodyText = document.body.innerText;
-    const results = [];
 
     // Check if the page has text content
     if (!bodyText || bodyText.trim() === '') {
         return { error: 'No text content found on this page.' };
     }
 
-    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // Escapes special characters for regex
-    const regex = new RegExp('\\b' + escapedQuery + '\\b', 'gi');
-    let words = document.body.innerText.split(' ');
+    try {
+        const response = await fetch('http://127.0.0.1:5000/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                text: bodyText
+            }),
+        });
 
-    for (let i = 0; i < words.length; i++) {
-        if (regex.test(words[i])) {
-            const surroundingText = words.slice(Math.max(i-2, 0), i+3).join(' ');
-            const expandedText = words.slice(Math.max(i-10, 0), i+11).join(' ');  // Grab 10 words before and after the found instance
-            results.push({text: surroundingText, expandedText: expandedText});
-            regex.lastIndex = 0; // Reset regex state due to global flag
+        const data = await response.json();
+
+        // Handle the response from the server
+        if (data.error) {
+            return { error: data.error };
+        } else {
+            return data.results;
         }
+    } catch (error) {
+        console.error('Error:', error);
+        return { error: 'An error occurred while processing your request.' };
     }
-
-    // Check if the query text was found
-    if (results.length === 0) {
-        return { error: `No instances of "${query}" found on this page.` };
-    }
-
-    return results;
 }
 
 let storedResults = [];
