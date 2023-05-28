@@ -93,16 +93,43 @@ function displayResults(results) {
     const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = '';
 
+    const answerContainer = document.createElement('div');
+    const contextContainer = document.createElement('div');
+    const exactMatchContainer = document.createElement('div');
+
+    // Append containers to resultsContainer
+    resultsContainer.appendChild(answerContainer);
+    resultsContainer.appendChild(contextContainer);
+    resultsContainer.appendChild(exactMatchContainer);
+
+    // Add headers for each section
+    const answerLabel = document.createElement('div');
+    answerLabel.textContent = 'Answer';
+    answerLabel.className = 'label';
+    answerContainer.appendChild(answerLabel);
+
+    const contextLabel = document.createElement('div');
+    contextLabel.textContent = 'Context Based Suggestions';
+    contextLabel.className = 'label';
+    contextContainer.appendChild(contextLabel);
+
+    const exactMatchLabel = document.createElement('div');
+    exactMatchLabel.textContent = 'Exact Matches';
+    exactMatchLabel.className = 'label';
+    exactMatchContainer.appendChild(exactMatchLabel);
+
+
     for (let i = 0; i < results.length; i++) {
         const result = results[i];
         const p = document.createElement('p');
-        p.textContent = result.text;
+        p.innerHTML = result.text;
 
+        // Add click event to show expanded text
         p.addEventListener('click', () => {
             // Clear the container and show expanded text for the clicked instance
             resultsContainer.innerHTML = '';
             const expandedP = document.createElement('p');
-            expandedP.textContent = result.expandedText;
+            expandedP.innerHTML = result.expandedText;
             resultsContainer.appendChild(expandedP);
 
             // Add a back button to return to the original results display
@@ -112,6 +139,16 @@ function displayResults(results) {
             resultsContainer.appendChild(backButton);
         });
 
-        resultsContainer.appendChild(p);
+        // Append to the appropriate container
+        if (i === 0) {
+            // The first result goes to the Answer section
+            answerContainer.appendChild(p);
+        } else if (i < 6) {
+            // The next 5 results go to the Context Based Suggestions section
+            contextContainer.appendChild(p);
+        } else {
+            // The rest of the results go to the Exact Matches section
+            exactMatchContainer.appendChild(p);
+        }
     }
 }

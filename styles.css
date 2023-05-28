@@ -1,219 +1,233 @@
 body {
-    font-family: 'Avenir', Arial, sans-serif;
-    background-color: #fff;
-    color: #000;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .popup-container {
-    width: 300px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  h1 {
-    color: #333;
-    font-weight: 500;
-    margin-bottom: 15px;
-  }
-  
-  input, button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    box-sizing: border-box;
-  }
-  
-  input {
-    border: 2px solid #aaa;
-    border-radius: 4px;
-  }
-  
-  button {
-    background-color: #bbb;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    transition: transform 0.3s ease;
-  }
-  
+  font-family: 'Avenir', Arial, sans-serif;
+  background-color: #FAFAFA; /* Light gray similar to Apple's light theme */
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.popup-container {
+  width: 300px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+input {
+  border: 1px solid #d1d1d6; /* Lighter border color */
+  border-radius: 4px;
+}
+
+button {
+  background-color: #007AFF; /* Light blue similar to Apple's light theme */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 button:hover {
-  /* background-color: #007aff; */
   transform: scale(1.05);
 }
-  
-  #results {
-    margin-top: 15px;
-    height: 200px;
-    overflow-y: auto;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    padding: 10px;
-    width: 90%;
-  }
-  
-  #results p {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 4px; /* Lower radius for less 'bubbly' look */
-    background: #888;
-    color: #fff;
-    box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-  
-  #results p:hover {
-    transform: scale(1.05);
-  }
-  
-  #results p:nth-child(even) {
-    background-color: #444;
-  }
 
-  .dark-mode p {
-    background: #444;
-    color: #CCCCCC;
-  }
-
-#results .dark-mode p:hover {
-    transform: scale(1.05);
+#results {
+  margin-top: 15px;
+  height: 200px;
+  overflow-y: auto;
+  border: 1px solid #d1d1d6; /* Lighter border color */
+  border-radius: 4px;
+  padding: 10px;
+  width: 90%;
 }
 
-#results .dark-mode p:nth-child(even) {
-    background-color: #3d3d3d;
+#results p {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  background: #E5E5EA; /* Light gray similar to Apple's light theme */
+  color: #000;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.1); /* Lighter shadow */
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-  .dark-mode {
-    background-color: #2f2f2f;
-    color: #CCCCCC;
-  }
-  
-  .dark-mode h1 {
-    color: #CCCCCC;
-    font-weight: 500;
-    margin-bottom: 15px;
-  }
-  
-  .dark-mode button {
-    background-color: #444;
-    color: #fff;
-    transition: transform 0.3s ease;
-  }
+#results p:hover {
+  transform: scale(1.05);
+}
 
-  .dark-mode button:hover {
-    /* background-color: #007aff; */
-    transform: scale(1.05);
-  }
-  
-  .dark-mode input {
-    background-color: #444;
-    color: #CCCCCC;
-  }
+#results p:nth-child(even) {
+  background-color: #D1D1D6; /* Slightly darker gray for every other item */
+}
 
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    float: right;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
-  
-  /* Dark mode styles for the switch */
-  .dark-mode .slider {
-    background-color: #444;
-  }
-  
-  .dark-mode input:checked + .slider {
-    background-color: #888;
-  }
+/* Dark Mode Styles */
 
-  /* Styling the scrollbar for Webkit browsers */
+.dark-mode {
+  background-color: #1C1C1E; /* Dark gray similar to Apple's dark theme */
+  color: #FFFFFF;
+}
+
+.dark-mode h1 {
+  color: #FFFFFF;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.dark-mode button {
+  background-color: #0A84FF; /* Brighter blue similar to Apple's dark theme */
+  color: #fff;
+  transition: transform 0.3s ease;
+}
+
+.dark-mode button:hover {
+  transform: scale(1.05);
+}
+
+.dark-mode input {
+  background-color: #3A3A3C; /* Dark gray similar to Apple's dark theme */
+  color: #FFFFFF;
+  border: 1px solid #636366; /* Dark border color */
+}
+
+.dark-mode #results {
+  border: 1px solid #636366; /* Dark border color */
+}
+
+.dark-mode #results p {
+  background: #2C2C2E; /* Dark gray similar to Apple's dark theme */
+  color: #FFFFFF;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.5); /* Darker shadow */
+}
+
+.dark-mode #results p:nth-child(even) {
+  background-color: #3A3A3C; /* Slightly darker gray for every other item */
+}
+/* Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  float: right;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d1d1d6; /* Light gray similar to Apple's light theme */
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #FAFAFA; /* Light gray similar to Apple's light theme */
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #007AFF; /* Light blue similar to Apple's light theme */
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #007AFF; /* Light blue similar to Apple's light theme */
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Dark Mode styles for the switch */
+.dark-mode .slider {
+  background-color: #636366; /* Dark gray similar to Apple's dark theme */
+}
+
+.dark-mode input:checked + .slider {
+  background-color: #0A84FF; /* Brighter blue similar to Apple's dark theme */
+}
+
+/* Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
-  
-  /* Dark Mode scrollbar styles */
-  .dark-mode ::-webkit-scrollbar-track {
-    background: #444; 
-  }
-   
-  .dark-mode ::-webkit-scrollbar-thumb {
-    background: #888; 
-  }
-  
-  .dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
+  width: 8px; /* Making it thinner */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 8px; /* Added to make it round */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+  background: #3A3A3C;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+  background: #636366;
+  border-radius: 8px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #2C2C2E; 
+}
+
+/* Label */
+.label {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  background: #007AFF; /* Making it blue */
+  color: #FFFFFF; /* Changing the font color to white */
+  font-weight: bold; /* Making the font bold */
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+}
+
+.dark-mode .label {
+  background: #0A84FF; /* A brighter blue for dark mode */
+  color: #fff;
+}
