@@ -16,6 +16,45 @@ window.onload = function() {
     });
 }
 
+async function highlightWord(word) {
+    let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    chrome.scripting.executeScript({
+        target: {tabId: tab.id},
+        func: function(word) {
+            // Create a new range and selection
+            const range = document.createRange();
+            const selection = window.getSelection();
+
+            // Clear any existing selections
+            selection.removeAllRanges();
+
+            // Use a TreeWalker to iterate over all text nodes in the body
+            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+            let node;
+            while (node = walker.nextNode()) {
+                const wordIndex = node.textContent.indexOf(word);
+
+                // If the word is found, set the range to that word
+                if (wordIndex > -1) {
+                    range.setStart(node, wordIndex);
+                    range.setEnd(node, wordIndex + word.length);
+
+                    // Add the range to the selection (highlighting it)
+                    selection.addRange(range);
+
+                    // Scroll the word into view
+                    range.startContainer.parentElement.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+                    
+                    // Only highlight the first instance of the word
+                    break;
+                }
+            }
+        },
+        args: [word]
+    });
+}
+
 const searchText = document.getElementById('searchText');
 const searchButton = document.getElementById('searchButton');
 
@@ -156,7 +195,19 @@ function displayResults(results) {
                 backButton.textContent = 'Back';
                 backButton.addEventListener('click', () => displayResults(storedResults));
                 resultsContainer.appendChild(backButton);
+
+                if (i>=6) {
+                // Add a highlight button to highlight the first word of the expanded text
+                const highlightButton = document.createElement('button');
+                highlightButton.textContent = 'Highlight First Word';
+                highlightButton.addEventListener('click', () => {
+                    let firstWord = result.expandedText.split(' ')[0];
+                    highlightWord(firstWord);
+                });
+                resultsContainer.appendChild(highlightButton);
+            }
             });
+
 
             // Append to the appropriate container
             if (i === 0) {
