@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple
 app = Flask(__name__)
 CORS(app)
 
-model_name = "deepset/roberta-base-squad2"
+model_name = "distilbert-base-uncased-distilled-squad"
 nlp = pipeline('question-answering', model=model_name, tokenizer=model_name)
 model = SentenceTransformer('stsb-roberta-large')
 results = []
