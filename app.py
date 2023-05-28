@@ -16,7 +16,6 @@ results = []
 import re
 
 def find_instances(text, query):
-    print('Finding instances of query...')
     result = []
     words = text.split()
     regex = re.compile(r'\b' + re.escape(query) + r'\b', re.I)  # \b for word boundary, re.I for case-insensitive
@@ -29,18 +28,19 @@ def find_instances(text, query):
             start = max(0, i - 10)  # 10 words before
             end = min(len(words), i + 11)  # 10 words after
             expanded_text = ' '.join(words[start:end])
-            result.append({'text': surrounding_text, 'expandedText': expanded_text})
+            result.append({'text': surrounding_text + "...", 'expandedText': expanded_text})
             
+    if len(result) == 0:
+        result.append({'text': 'No exact matches found.', 'expandedText': 'No exact matches found. The search query was not found in the text. Try searching for a different query or view other context based suggestions by clicking back.'})
     return result
 
 def first_n_words(sentence: str, n: int) -> str:
     words = sentence.split()
     if len(words) < n:
-        return sentence  # return the whole sentence if it has less than 'n' words
-    return ' '.join(words[:n])
+        return sentence + "."  # return the whole sentence if it has less than 'n' words
+    return ' '.join(words[:n]) + '...'  # return the first 'n' words followed by '...'
 
 def find_context(query, text):
-    print('Finding context of query...')
     result = []
     sentences = text.split('.')
     sentences = list(set(filter(None, sentences)))
@@ -59,7 +59,7 @@ def find_context(query, text):
     
     # Append the top 5 sentences to the existing 'result' list
     for sentence, _ in top_5_sentences:
-        result.append({'text': first_n_words(sentence, 10), 'expandedText': sentence})
+        result.append({'text': first_n_words(sentence, 10), 'expandedText': sentence + "."})
 
     return result
 
@@ -75,11 +75,11 @@ def search():
     results = []
     
     # find answer to question
-    print('Finding best answer to question...')
     answers = nlp({'question': query, 'context': text})
-    if not answers:
-        return jsonify(results=[{'text': 'No answers found.', 'expandedText': 'No answers found.'}])
-    results.append({'text': answers['answer'] if len(answers['answer']) < 100 else answers['answer'][:100], 'expandedText': answers['answer'] + ' <br><br>(This answer is ' + str(round(answers['score'] * 100)) + '% confident)'})
+    if (not answers) or (answers['score'] < 0.2):
+        results.append({'text': 'No answers found.', 'expandedText': 'No answers found. The answers that were generated were not confident enough: ' + str(round(answers['score'] * 100)) + '%'})
+    else:
+        results.append({'text': answers['answer'] if len(answers['answer']) < 100 else answers['answer'][:100], 'expandedText': answers['answer'] + ' <br><br>(This answer is ' + str(round(answers['score'] * 100)) + '% confident)'})
     
     # find contextual instances of query
     results.extend(find_context(query, text))

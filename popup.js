@@ -16,6 +16,15 @@ window.onload = function() {
     });
 }
 
+const searchText = document.getElementById('searchText');
+const searchButton = document.getElementById('searchButton');
+
+searchText.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {  //checks whether the pressed key is "Enter"
+        searchButton.click();
+    }
+});
+
 document.getElementById('searchButton').addEventListener('click', async () => {
     const query = document.getElementById('searchText').value;
 
@@ -23,6 +32,14 @@ document.getElementById('searchButton').addEventListener('click', async () => {
         alert("Please enter some text to search");
         return;
     }
+
+    // Clear the results and show a loading message
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = '';
+    const loadingBubble = document.createElement('p');
+    loadingBubble.className = 'green-bubble';
+    loadingBubble.textContent = 'Please wait for a few seconds while your request is being processed...';
+    resultsContainer.appendChild(loadingBubble);
 
     let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -93,62 +110,70 @@ function displayResults(results) {
     const resultsContainer = document.getElementById('results');
     resultsContainer.innerHTML = '';
 
-    const answerContainer = document.createElement('div');
-    const contextContainer = document.createElement('div');
-    const exactMatchContainer = document.createElement('div');
+    if(results.length > 1) {
 
-    // Append containers to resultsContainer
-    resultsContainer.appendChild(answerContainer);
-    resultsContainer.appendChild(contextContainer);
-    resultsContainer.appendChild(exactMatchContainer);
+        const answerContainer = document.createElement('div');
+        const contextContainer = document.createElement('div');
+        const exactMatchContainer = document.createElement('div');
 
-    // Add headers for each section
-    const answerLabel = document.createElement('div');
-    answerLabel.textContent = 'Answer';
-    answerLabel.className = 'label';
-    answerContainer.appendChild(answerLabel);
+        // Append containers to resultsContainer
+        resultsContainer.appendChild(answerContainer);
+        resultsContainer.appendChild(contextContainer);
+        resultsContainer.appendChild(exactMatchContainer);
 
-    const contextLabel = document.createElement('div');
-    contextLabel.textContent = 'Context Based Suggestions';
-    contextLabel.className = 'label';
-    contextContainer.appendChild(contextLabel);
+        // Add headers for each section
+        const answerLabel = document.createElement('div');
+        answerLabel.textContent = 'Answer';
+        answerLabel.className = 'label';
+        answerContainer.appendChild(answerLabel);
 
-    const exactMatchLabel = document.createElement('div');
-    exactMatchLabel.textContent = 'Exact Matches';
-    exactMatchLabel.className = 'label';
-    exactMatchContainer.appendChild(exactMatchLabel);
+        const contextLabel = document.createElement('div');
+        contextLabel.textContent = 'Context Based Suggestions';
+        contextLabel.className = 'label';
+        contextContainer.appendChild(contextLabel);
+
+        const exactMatchLabel = document.createElement('div');
+        exactMatchLabel.textContent = 'Exact Matches';
+        exactMatchLabel.className = 'label';
+        exactMatchContainer.appendChild(exactMatchLabel);
 
 
-    for (let i = 0; i < results.length; i++) {
-        const result = results[i];
-        const p = document.createElement('p');
-        p.innerHTML = result.text;
+        for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+            const p = document.createElement('p');
+            p.innerHTML = result.text;
 
-        // Add click event to show expanded text
-        p.addEventListener('click', () => {
-            // Clear the container and show expanded text for the clicked instance
-            resultsContainer.innerHTML = '';
-            const expandedP = document.createElement('p');
-            expandedP.innerHTML = result.expandedText;
-            resultsContainer.appendChild(expandedP);
+            // Add click event to show expanded text
+            p.addEventListener('click', () => {
+                // Clear the container and show expanded text for the clicked instance
+                resultsContainer.innerHTML = '';
+                const expandedP = document.createElement('p');
+                expandedP.innerHTML = result.expandedText;
+                resultsContainer.appendChild(expandedP);
 
-            // Add a back button to return to the original results display
-            const backButton = document.createElement('button');
-            backButton.textContent = 'Back';
-            backButton.addEventListener('click', () => displayResults(storedResults));
-            resultsContainer.appendChild(backButton);
-        });
+                // Add a back button to return to the original results display
+                const backButton = document.createElement('button');
+                backButton.textContent = 'Back';
+                backButton.addEventListener('click', () => displayResults(storedResults));
+                resultsContainer.appendChild(backButton);
+            });
 
-        // Append to the appropriate container
-        if (i === 0) {
-            // The first result goes to the Answer section
-            answerContainer.appendChild(p);
-        } else if (i < 6) {
-            // The next 5 results go to the Context Based Suggestions section
-            contextContainer.appendChild(p);
-        } else {
-            // The rest of the results go to the Exact Matches section
-            exactMatchContainer.appendChild(p);
+            // Append to the appropriate container
+            if (i === 0) {
+                // The first result goes to the Answer section
+                answerContainer.appendChild(p);
+            } else if (i < 6) {
+                // The next 5 results go to the Context Based Suggestions section
+                contextContainer.appendChild(p);
+            } else {
+                // The rest of the results go to the Exact Matches section
+                exactMatchContainer.appendChild(p);
+            }
         }
+    } else if (results.length === 1) {
+        // If there is only one result, display it in the results container
+        const p = document.createElement('p');
+        p.innerHTML = results[0].text;
+        resultsContainer.appendChild(p);
     }
 }
